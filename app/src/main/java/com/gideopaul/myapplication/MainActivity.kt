@@ -81,32 +81,8 @@ fun MotionLayoutAppBarDemo() {
     }
 }
 
-private fun getToolbarMotionLayoutProgress(
-    currentScrollPosition: Int,
-    startOfTransitionZone: Int,
-    endOfTransitionZone: Int
-): Float {
-    return when {
-        // When the user scroll position is in the transition zone, for evert pixel scrolled, we
-        // will compute the alpha value.
-        currentScrollPosition in startOfTransitionZone..endOfTransitionZone -> {
-            val pixelsScrolledAboveStartOfTransitionZone =
-                currentScrollPosition - startOfTransitionZone
-            pixelsScrolledAboveStartOfTransitionZone.toFloat() / 100
-        }
-
-        // When user scroll position is below the transition zone, alpha will always be 0f.
-        // An example would be the initial state of the screen when user did not scroll at all.
-        currentScrollPosition < startOfTransitionZone -> 0f
-
-        // When user scroll position is above the transition zone, alpha will always be 1f.
-        else -> 1f
-    }
-}
-
 @Preview
 @Composable
 fun PreviewMotionLayoutAppBarDemo() {
     MotionLayoutAppBarDemo()
 }
-

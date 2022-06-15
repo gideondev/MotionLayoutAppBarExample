@@ -20,71 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintSet
+import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
-import androidx.constraintlayout.compose.MotionScene
-
-val motionSceneJson = """
-{
-  "ConstraintSets": {
-    "start": {
-      // Navigation icon will be at the start with a padding of 16dp.
-      "navigation_icon": {
-        "start": ["parent", "start", 16],
-        "top": ["parent", "top", 16],
-        "bottom": ["parent", "bottom", 16],
-      },
-      
-      // Title will be beside the navigation icon after 16dp spacing
-      "title": {
-        "start": ["navigation_icon", "end", 16],
-        "top": ["parent", "top", 16]
-      },
-      
-      // Subtitle will be directly below the title and it's start will be aligned to title.
-      "subtitle": {
-        "start": ["title", "start", 0],
-        "top": ["title", "bottom", 4],
-        "bottom": ["parent", "bottom", 16],
-      },
-      
-      // Height and width are set to spread, that's equivalent to match_parent
-      "background": {
-        "width": "spread",
-        "height":  "spread",
-        "start": ["parent", "start"],
-        "end": ["parent", "end"],
-        "top": ["parent", "top"],
-        "bottom": ["parent", "bottom"],
-      }
-    },
-    "end": {
-     "navigation_icon": {
-        "start": ["parent", "start", 16],
-        "top": ["parent", "top", 16]
-      },
-      "title": {
-        "start": ["parent", "start", 32],
-        "top": ["navigation_icon", "bottom", 16],
-      },
-      "subtitle": {
-        "start": ["title", "start", 0],
-        "top": ["title", "bottom", 16],
-        "bottom": ["parent", "bottom", 16],
-      },
-      "background": {
-        "width": "spread",
-        "height":  "spread",
-        "start": ["parent", "start"],
-        "end": ["parent", "end"],
-        "top": ["parent", "top"],
-        "bottom": ["parent", "bottom"],
-      }
-    }
-  }
-}
-"""
-
 
 @OptIn(ExperimentalMotionApi::class)
 @Composable
@@ -95,7 +35,8 @@ fun MotionLayoutAppBar(
 ) {
     MotionLayout(
         modifier = Modifier.fillMaxWidth(),
-        motionScene = MotionScene(motionSceneJson),
+        start = startConstraintSet(),
+        end = endConstraintSet(),
         progress = progress
     ) {
         Box(
@@ -128,12 +69,75 @@ fun MotionLayoutAppBar(
             style = MaterialTheme.typography.h6,
             color = contentColor
         )
-
-
     }
-
 }
 
+private fun startConstraintSet() = ConstraintSet {
+    val navigationIcon = createRefFor("navigation_icon")
+    val title = createRefFor("title")
+    val subtitle = createRefFor("subtitle")
+    val backgroundBox = createRefFor("background")
+
+    constrain(navigationIcon) {
+        top.linkTo(parent.top, 16.dp)
+        start.linkTo(parent.start, 16.dp)
+        bottom.linkTo(parent.bottom, 16.dp)
+    }
+
+    constrain(title) {
+        top.linkTo(parent.top, 16.dp)
+        start.linkTo(navigationIcon.end, 16.dp)
+    }
+
+    constrain(subtitle) {
+        top.linkTo(title.bottom, 16.dp)
+        start.linkTo(title.start)
+        bottom.linkTo(parent.bottom, 16.dp)
+    }
+
+    constrain(backgroundBox) {
+        width = Dimension.matchParent
+        height = Dimension.fillToConstraints
+
+        top.linkTo(parent.top)
+        start.linkTo(parent.start)
+        end.linkTo(parent.end)
+        bottom.linkTo(parent.bottom)
+    }
+}
+
+private fun endConstraintSet() = ConstraintSet {
+    val navigationIcon = createRefFor("navigation_icon")
+    val title = createRefFor("title")
+    val subtitle = createRefFor("subtitle")
+    val backgroundBox = createRefFor("background")
+
+    constrain(navigationIcon) {
+        top.linkTo(parent.top, 16.dp)
+        start.linkTo(parent.start, 16.dp)
+    }
+
+    constrain(title) {
+        top.linkTo(navigationIcon.bottom, 16.dp)
+        start.linkTo(navigationIcon.start, 16.dp)
+    }
+
+    constrain(subtitle) {
+        top.linkTo(title.bottom, 16.dp)
+        start.linkTo(title.start)
+        bottom.linkTo(parent.bottom, 16.dp)
+    }
+
+    constrain(backgroundBox) {
+        width = Dimension.matchParent
+        height = Dimension.fillToConstraints
+
+        top.linkTo(parent.top)
+        start.linkTo(parent.start)
+        end.linkTo(parent.end)
+        bottom.linkTo(parent.bottom)
+    }
+}
 
 @Preview
 @Composable

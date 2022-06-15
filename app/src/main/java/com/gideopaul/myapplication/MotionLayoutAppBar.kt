@@ -28,20 +28,27 @@ val motionSceneJson = """
 {
   "ConstraintSets": {
     "start": {
+      // Navigation icon will be at the start with a padding of 16dp.
       "navigation_icon": {
         "start": ["parent", "start", 16],
         "top": ["parent", "top", 16],
         "bottom": ["parent", "bottom", 16],
       },
+      
+      // Title will be beside the navigation icon after 16dp spacing
       "title": {
         "start": ["navigation_icon", "end", 16],
         "top": ["parent", "top", 16]
       },
+      
+      // Subtitle will be directly below the title and it's start will be aligned to title.
       "subtitle": {
         "start": ["title", "start", 0],
         "top": ["title", "bottom", 4],
         "bottom": ["parent", "bottom", 16],
       },
+      
+      // Height and width are set to spread, that's equivalent to match_parent
       "background": {
         "width": "spread",
         "height":  "spread",

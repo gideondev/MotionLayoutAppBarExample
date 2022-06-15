@@ -70,14 +70,14 @@ fun MotionLayoutAppBar(
         Text(
             modifier = Modifier.layoutId(MotionLayoutAppBarItem.TITLE.id),
             text = title,
-            style = MaterialTheme.typography.h5,
+            style = MaterialTheme.typography.h6,
             color = contentColor
         )
 
         Text(
             modifier = Modifier.layoutId(MotionLayoutAppBarItem.SUBTITLE.id),
             text = subTitle,
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.subtitle1,
             color = contentColor
         )
     }

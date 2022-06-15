@@ -1,13 +1,11 @@
 package com.gideopaul.myapplication
 
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -17,17 +15,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 
+private enum class MotionLayoutAppBarItem(val id: String) {
+    BACK_BUTTON("back_button"),
+    TITLE("title"),
+    SUBTITLE("subtitle"),
+    BACKGROUND_BOX("background")
+}
+
 @OptIn(ExperimentalMotionApi::class)
 @Composable
 fun MotionLayoutAppBar(
+    title: String,
+    subTitle: String,
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = {},
+    elevation: Dp = 4.dp,
     backgroundColor: Color = MaterialTheme.colors.primary,
     contentColor: Color = MaterialTheme.colors.onPrimary,
     progress: Float = 0.0f
@@ -38,14 +47,15 @@ fun MotionLayoutAppBar(
         end = endConstraintSet(),
         progress = progress
     ) {
-        Box(
-            modifier = Modifier
-                .layoutId("background")
-                .background(backgroundColor)
+        Surface(
+            modifier = Modifier.layoutId(MotionLayoutAppBarItem.BACKGROUND_BOX.id),
+            elevation = elevation,
+            color = backgroundColor,
+            content = {}
         )
 
         IconButton(
-            modifier = Modifier.layoutId("back_button"),
+            modifier = Modifier.layoutId(MotionLayoutAppBarItem.BACK_BUTTON.id),
             onClick = {
                 onBackPressed()
             }
@@ -58,15 +68,15 @@ fun MotionLayoutAppBar(
         }
 
         Text(
-            modifier = Modifier.layoutId("title"),
-            text = "Title",
+            modifier = Modifier.layoutId(MotionLayoutAppBarItem.TITLE.id),
+            text = title,
             style = MaterialTheme.typography.h5,
             color = contentColor
         )
 
         Text(
-            modifier = Modifier.layoutId("subtitle"),
-            text = "Subtitle",
+            modifier = Modifier.layoutId(MotionLayoutAppBarItem.SUBTITLE.id),
+            text = subTitle,
             style = MaterialTheme.typography.h6,
             color = contentColor
         )
@@ -74,10 +84,10 @@ fun MotionLayoutAppBar(
 }
 
 private fun startConstraintSet() = ConstraintSet {
-    val backButton = createRefFor("back_button")
-    val title = createRefFor("title")
-    val subtitle = createRefFor("subtitle")
-    val backgroundBox = createRefFor("background")
+    val backButton = createRefFor(MotionLayoutAppBarItem.BACK_BUTTON.id)
+    val title = createRefFor(MotionLayoutAppBarItem.TITLE.id)
+    val subtitle = createRefFor(MotionLayoutAppBarItem.SUBTITLE.id)
+    val backgroundBox = createRefFor(MotionLayoutAppBarItem.BACKGROUND_BOX.id)
 
     constrain(backButton) {
         top.linkTo(parent.top, 16.dp)
@@ -108,10 +118,10 @@ private fun startConstraintSet() = ConstraintSet {
 }
 
 private fun endConstraintSet() = ConstraintSet {
-    val backButton = createRefFor("back_button")
-    val title = createRefFor("title")
-    val subtitle = createRefFor("subtitle")
-    val backgroundBox = createRefFor("background")
+    val backButton = createRefFor(MotionLayoutAppBarItem.BACK_BUTTON.id)
+    val title = createRefFor(MotionLayoutAppBarItem.TITLE.id)
+    val subtitle = createRefFor(MotionLayoutAppBarItem.SUBTITLE.id)
+    val backgroundBox = createRefFor(MotionLayoutAppBarItem.BACKGROUND_BOX.id)
 
     constrain(backButton) {
         top.linkTo(parent.top, 16.dp)
@@ -158,6 +168,8 @@ fun PreviewMotionLayoutAppBar() {
     }
 
     MotionLayoutAppBar(
+        title = "Title",
+        subTitle = "Subtitle",
         progress = motionLayoutProgress.value
     )
 }

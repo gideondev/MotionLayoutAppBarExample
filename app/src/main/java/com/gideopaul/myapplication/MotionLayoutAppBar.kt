@@ -5,6 +5,7 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -40,9 +41,16 @@ val motionSceneJson = """
         "start": ["title", "start", 0],
         "top": ["title", "bottom", 4],
         "bottom": ["parent", "bottom", 16],
+      },
+      "background": {
+        "width": "spread",
+        "height":  "spread",
+        "start": ["parent", "start"],
+        "end": ["parent", "end"],
+        "top": ["parent", "top"],
+        "bottom": ["parent", "bottom"],
       }
     },
-    
     "end": {
      "navigation_icon": {
         "start": ["parent", "start", 16],
@@ -56,6 +64,14 @@ val motionSceneJson = """
         "start": ["title", "start", 0],
         "top": ["title", "bottom", 16],
         "bottom": ["parent", "bottom", 16],
+      },
+      "background": {
+        "width": "spread",
+        "height":  "spread",
+        "start": ["parent", "start"],
+        "end": ["parent", "end"],
+        "top": ["parent", "top"],
+        "bottom": ["parent", "bottom"],
       }
     }
   }
@@ -67,15 +83,20 @@ val motionSceneJson = """
 @Composable
 fun MotionLayoutAppBar(
     backgroundColor: Color = MaterialTheme.colors.primary,
+    contentColor: Color = MaterialTheme.colors.onPrimary,
     progress: Float = 0.0f
 ) {
     MotionLayout(
-        modifier = Modifier
-            .background(backgroundColor)
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         motionScene = MotionScene(motionSceneJson),
         progress = progress
     ) {
+        Box(
+            modifier = Modifier
+                .layoutId("background")
+                .background(backgroundColor)
+        )
+
         IconButton(
             modifier = Modifier.layoutId("navigation_icon"),
             onClick = { }
@@ -83,7 +104,7 @@ fun MotionLayoutAppBar(
             Icon(
                 Icons.Default.ArrowBack,
                 "Back Button",
-                tint = MaterialTheme.colors.onPrimary
+                tint = contentColor
             )
         }
 
@@ -91,15 +112,17 @@ fun MotionLayoutAppBar(
             modifier = Modifier.layoutId("title"),
             text = "Title",
             style = MaterialTheme.typography.h5,
-            color = MaterialTheme.colors.onPrimary
+            color = contentColor
         )
 
         Text(
             modifier = Modifier.layoutId("subtitle"),
             text = "Subtitle",
             style = MaterialTheme.typography.h6,
-            color = MaterialTheme.colors.onPrimary
+            color = contentColor
         )
+
+
     }
 
 }

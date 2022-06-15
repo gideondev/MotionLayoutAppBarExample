@@ -90,7 +90,7 @@ private fun startConstraintSet() = ConstraintSet {
     }
 
     constrain(subtitle) {
-        top.linkTo(title.bottom, 16.dp)
+        top.linkTo(title.bottom, 4.dp)
         start.linkTo(title.start)
         bottom.linkTo(parent.bottom, 16.dp)
     }
@@ -123,7 +123,7 @@ private fun endConstraintSet() = ConstraintSet {
     }
 
     constrain(subtitle) {
-        top.linkTo(title.bottom, 16.dp)
+        top.linkTo(title.bottom, 8.dp)
         start.linkTo(title.start)
         bottom.linkTo(parent.bottom, 16.dp)
     }

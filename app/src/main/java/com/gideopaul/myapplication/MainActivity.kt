@@ -51,10 +51,16 @@ fun MotionLayoutAppBarDemo() {
         Column(
             modifier = Modifier.verticalScroll(scrollState)
         ) {
-            DummySection(backgroundColor = Color.Gray)
-            DummySection(backgroundColor = Color.Green)
-            DummySection(backgroundColor = Color.Red)
-            DummySection(backgroundColor = Color.Blue)
+            val sectionColors = listOf(
+                Color(0XFFBBF6F3),
+                Color(0XFFF6F3B5),
+                Color(0XFFFFDCBE),
+                Color(0XFFFDB9C9)
+            )
+
+            sectionColors.forEach { color ->
+                DummySection(backgroundColor = color)
+            }
         }
 
         MotionLayoutAppBar(

@@ -22,11 +22,11 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 
-private enum class MotionLayoutAppBarItem(val id: String) {
-    BACK_BUTTON("back_button"),
-    TITLE("title"),
-    SUBTITLE("subtitle"),
-    BACKGROUND_BOX("background")
+private enum class MotionLayoutAppBarItem {
+    BACK_BUTTON,
+    TITLE,
+    SUBTITLE,
+    BACKGROUND_BOX
 }
 
 @OptIn(ExperimentalMotionApi::class)
@@ -48,14 +48,14 @@ fun MotionLayoutAppBar(
         progress = progress
     ) {
         Surface(
-            modifier = Modifier.layoutId(MotionLayoutAppBarItem.BACKGROUND_BOX.id),
+            modifier = Modifier.layoutId(MotionLayoutAppBarItem.BACKGROUND_BOX),
             elevation = elevation,
             color = backgroundColor,
             content = {}
         )
 
         IconButton(
-            modifier = Modifier.layoutId(MotionLayoutAppBarItem.BACK_BUTTON.id),
+            modifier = Modifier.layoutId(MotionLayoutAppBarItem.BACK_BUTTON),
             onClick = {
                 onBackPressed()
             }
@@ -68,14 +68,14 @@ fun MotionLayoutAppBar(
         }
 
         Text(
-            modifier = Modifier.layoutId(MotionLayoutAppBarItem.TITLE.id),
+            modifier = Modifier.layoutId(MotionLayoutAppBarItem.TITLE),
             text = title,
             style = MaterialTheme.typography.h6,
             color = contentColor
         )
 
         Text(
-            modifier = Modifier.layoutId(MotionLayoutAppBarItem.SUBTITLE.id),
+            modifier = Modifier.layoutId(MotionLayoutAppBarItem.SUBTITLE),
             text = subTitle,
             style = MaterialTheme.typography.subtitle1,
             color = contentColor
@@ -84,10 +84,10 @@ fun MotionLayoutAppBar(
 }
 
 private fun startConstraintSet() = ConstraintSet {
-    val backButton = createRefFor(MotionLayoutAppBarItem.BACK_BUTTON.id)
-    val title = createRefFor(MotionLayoutAppBarItem.TITLE.id)
-    val subtitle = createRefFor(MotionLayoutAppBarItem.SUBTITLE.id)
-    val backgroundBox = createRefFor(MotionLayoutAppBarItem.BACKGROUND_BOX.id)
+    val backButton = createRefFor(MotionLayoutAppBarItem.BACK_BUTTON)
+    val title = createRefFor(MotionLayoutAppBarItem.TITLE)
+    val subtitle = createRefFor(MotionLayoutAppBarItem.SUBTITLE)
+    val backgroundBox = createRefFor(MotionLayoutAppBarItem.BACKGROUND_BOX)
 
     constrain(backButton) {
         top.linkTo(parent.top, 16.dp)
@@ -118,10 +118,10 @@ private fun startConstraintSet() = ConstraintSet {
 }
 
 private fun endConstraintSet() = ConstraintSet {
-    val backButton = createRefFor(MotionLayoutAppBarItem.BACK_BUTTON.id)
-    val title = createRefFor(MotionLayoutAppBarItem.TITLE.id)
-    val subtitle = createRefFor(MotionLayoutAppBarItem.SUBTITLE.id)
-    val backgroundBox = createRefFor(MotionLayoutAppBarItem.BACKGROUND_BOX.id)
+    val backButton = createRefFor(MotionLayoutAppBarItem.BACK_BUTTON)
+    val title = createRefFor(MotionLayoutAppBarItem.TITLE)
+    val subtitle = createRefFor(MotionLayoutAppBarItem.SUBTITLE)
+    val backgroundBox = createRefFor(MotionLayoutAppBarItem.BACKGROUND_BOX)
 
     constrain(backButton) {
         top.linkTo(parent.top, 16.dp)
@@ -160,7 +160,8 @@ fun PreviewMotionLayoutAppBar() {
             1.0f,
             animationSpec = infiniteRepeatable(
                 animation = tween(
-                    durationMillis = 1500,
+                    delayMillis = 1000,
+                    durationMillis = 1000,
                     easing = LinearEasing
                 )
             )
@@ -170,6 +171,29 @@ fun PreviewMotionLayoutAppBar() {
     MotionLayoutAppBar(
         title = "Title",
         subTitle = "Subtitle",
+        backgroundColor = Color(0xFF214561),
         progress = motionLayoutProgress.value
+    )
+}
+
+@Preview
+@Composable
+fun InitialStatePreview() {
+    MotionLayoutAppBar(
+        title = "Title",
+        subTitle = "Subtitle",
+        backgroundColor = Color(0xFF214561),
+        progress = 0.0f
+    )
+}
+
+@Preview
+@Composable
+fun FinalStatePreview() {
+    MotionLayoutAppBar(
+        title = "Title",
+        subTitle = "Subtitle",
+        backgroundColor = Color(0xFF214561),
+        progress = 1.0f
     )
 }

@@ -73,10 +73,10 @@ fun MotionLayoutAppBarDemo() {
         }
 
         MotionLayoutAppBar(
-            title = "MotionLayoutActivity",
-            subTitle = "Example",
+            title = "Title",
+            subTitle = "Subtitle",
             progress = progress,
-            backgroundColor = Color(0xFF375857)
+            backgroundColor = Color(0xFF214561),
         )
     }
 }
